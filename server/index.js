@@ -2,18 +2,19 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql");
 
-const db = mysql.createPool({
+const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "crud_db",
+  database: "cruddatabase",
 });
 
 app.get("/", (req, res) => {
   const sqlInsert =
-    "INSERT INTO albums (albumName, bandName) VALUES ('Isolate and Medicate', 'Seether')";
-  db.query;
-  res.send("Hello World");
+    "INSERT INTO cruddb.albums (albumname, bandname) VALUES ('parish', 'seether');";
+  db.query(sqlInsert, (err, result) => {
+    res.send("helloworld");
+  });
 });
 
 app.listen(3001, () => {
