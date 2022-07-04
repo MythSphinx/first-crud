@@ -32,6 +32,25 @@ app.post("/api/insert", (req, res) => {
   });
 });
 
+app.delete("/api/delete/:id", (req, res) => {
+  const name = req.params.id;
+  const sqlDelete = "DELETE FROM albums WHERE albumName = ?";
+
+  db.query(sqlDelete, name, (err, result) => {
+    console.log(err);
+  });
+});
+
+app.put("/api/update", (req, res) => {
+  const name = req.body.albumName;
+  const band = req.body.bandName;
+  const sqlUpdate = "UPDATE albums SET bandname = ? WHERE albumName = ?";
+
+  db.query(sqlUpdate, [band, name], (err, result) => {
+    console.log(err);
+  });
+});
+
 app.listen(3001, () => {
   console.log("running on port 3001");
 });

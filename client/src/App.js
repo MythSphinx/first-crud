@@ -6,6 +6,7 @@ function App() {
   const [album, setAlbum] = useState("");
   const [band, setBand] = useState("");
   const [albumList, setAlbumList] = useState([]);
+  const [newBand, setNewBand] = useState("");
 
   useEffect(() => {
     Axios.get("http://localhost:3001/api/get").then((response) => {
@@ -17,9 +18,21 @@ function App() {
     Axios.post("http://localhost:3001/api/insert", {
       albumName: album,
       bandName: band,
-    }).then(() => {
-      alert.apply("succesful insert");
     });
+
+    setAlbumList([...albumList, { albumname: album, bandname: band }]);
+  };
+
+  const deleteNames = (album) => {
+    Axios.delete(`http://localhost:3001/api/delete/${album}`);
+  };
+
+  const updateNames = (album) => {
+    Axios.put("http://localhost:3001/api/update/", {
+      albumName: album,
+      bandName: newBand,
+    });
+    setNewBand("");
   };
 
   return (
@@ -47,9 +60,31 @@ function App() {
         <button onClick={submitBand}>Submit</button>
         {albumList.map((val) => {
           return (
-            <h1>
-              Album Name: {val.albumname} | Band Name: {val.bandname}
-            </h1>
+            <div className="card">
+              <h1>{val.albumname}</h1>
+              <p>{val.bandname}</p>
+              <button
+                onClick={() => {
+                  deleteNames(val.albumname);
+                }}
+              >
+                Delete
+              </button>
+              <input
+                type="text"
+                id="updateInput"
+                onChange={(e) => {
+                  setNewBand(e.target.value);
+                }}
+              />
+              <button
+                onClick={() => {
+                  updateNames(val.albumname);
+                }}
+              >
+                Update
+              </button>
+            </div>
           );
         })}
       </div>
